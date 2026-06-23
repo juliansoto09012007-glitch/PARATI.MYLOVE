@@ -143,6 +143,154 @@
             display: inline-block;
             max-width: 450px; /* Alínea el tamaño máximo con tus otras fotos */
         }
+
+        /* =======================================================
+           NUEVO APARTADO: BLOQUE DE NOTAS Y RECUERDOS FUTUROS 
+           ======================================================= */
+        .seccion-notas {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px dashed rgba(255, 77, 109, 0.3);
+        }
+
+        .seccion-notas h2 {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: #ff758f;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 117, 143, 0.5);
+        }
+
+        .formulario-nota {
+            background: rgba(20, 10, 15, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 117, 143, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .formulario-nota textarea {
+            width: 100%;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            resize: none;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+
+        .formulario-nota textarea:focus {
+            outline: none;
+            border-color: #ff4d6d;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .controles-nota {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* Estilo personalizado para el input de tipo archivo */
+        .input-archivo-label {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 1px solid rgba(255, 117, 143, 0.3);
+            transition: all 0.3s ease;
+            color: #ff85a1;
+        }
+
+        .input-archivo-label:hover {
+            background: rgba(255, 77, 109, 0.2);
+            border-color: #ff4d6d;
+        }
+
+        .input-archivo-label input[type="file"] {
+            display: none;
+        }
+
+        .btn-guardar {
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn-guardar:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        /* Contenedor de las notas guardadas */
+        .contenedor-notas-guardadas {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tarjeta-nota {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #ff4d6d;
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            position: relative;
+            animation: aparecer 0.4s ease-out;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tarjeta-nota p {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            color: #f0e6ef;
+        }
+
+        .tarjeta-nota img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-eliminar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .btn-eliminar:hover {
+            color: #ff4d6d;
+        }
     </style>
 </head>
 <body>
@@ -164,7 +312,7 @@
         
         HASTA HACE POCO QUE DESCUBRI QUE NO TE GUSTABA COMO A MI ME GUSTABAS TU. TAL VES PIENSES QUE ME PUSE ASI POR ALGO INSIGNIFICANTE PERO TU COMO ESTARIAS SI NO LE ATRAES A TU CHICO....       
         
-        DEJE DE ESCRIBIRTE, PERO CLARO QUE QUERIA HACERLO. HASTA QUE TE ESCRIBI PERO SOLO RESPONDIAS COSAS COMO AA, A, OK, Y COSAS ASI, PERO BUENO LUEGO...       
+        DEJE DE ESCRIBIRTE, PERO CLARO QUE QUERIA HACERLO. HASTA QUE TE ESCRIBI PERO SOLO RESPONDIAS COSAS COMO AA, A, OK, Y COSAS ASI, PERO BU Bueno LUEGO...       
 
         Te escriibi varias veces y al parecer ya no tienes intención de hablarme, no voy a decir que me equivoque o me arrepiento de lo que te dije por qué la verdad no, no me arrepiento pero también sé que te extraño, quiero verte y sentirte a mi lado pero sabiendo que tú también lo quieres y lo sientes m...... 
         
@@ -174,7 +322,7 @@
         Tal vez lo nuestro solo fue un amor de verano. Algo q talvez para algunos no signifique nada pero yo si te tendré presente siempre, fuiste con la primera que hice varias cosas locas y no te quiero olvidar.
         QUE TAL SI NOS HACEMOS AMIGOS,TALVEZ SI FUNCIONAMOS ASI .
 
-       EN FIN .TE PUEDO AYUDAR A  q encuentres al chico que te gusta, al chico con músculos "al Leonardo DiCaprio" de tus sueños, 🫂✨
+        EN FIN .TE PUEDO AYUDAR A  q encuentres al chico que te gusta, al chico con músculos "al Leonardo DiCaprio" de tus sueños, 🫂✨
     </div>
 
     <div class="decoracion-corazon">💖</div>
@@ -198,10 +346,119 @@
         </div>
     </div>
 
+    <div class="seccion-notas">
+        <h2>Nuestro Rincón de Notas ✨</h2>
+        
+        <div class="formulario-nota">
+            <textarea id="textoNota" placeholder="Escribe un pensamiento, una nota o algo que quieras dejar aquí..."></textarea>
+            
+            <div class="controles-nota">
+                <label class="input-archivo-label">
+                    📷 Añadir Imagen
+                    <input type="file" id="imagenNota" accept="image/*">
+                </label>
+                <span id="nombreArchivo" style="font-size: 0.8rem; color: #aaa;"></span>
+                <button class="btn-guardar" onclick="agregarNota()">Publicar</button>
+            </div>
+        </div>
+
+        <div id="contenedorNotas" class="contenedor-notas-guardadas">
+            </div>
+    </div>
+
     <div class="posdata">
         Posdata: sé que estás diciendo "A" de lo cursi que es esto 🤫
     </div>
 </div>
+
+<script>
+    // Cargar notas guardadas en localStorage al abrir la página
+    document.addEventListener("DOMContentLoaded", ordenarYMostrarNotas);
+
+    // Mostrar el nombre del archivo seleccionado
+    document.getElementById('imagenNota').addEventListener('change', function(e) {
+        const nombre = e.target.files[0] ? e.target.files[0].name : '';
+        document.getElementById('nombreArchivo').textContent = nombre ? `📷 ${nombre}` : '';
+    });
+
+    function agregarNota() {
+        const texto = document.getElementById("textoNota").value.trim();
+        const archivoImagen = document.getElementById("imagenNota").files[0];
+
+        if (!texto && !archivoImagen) {
+            alert("Por favor, escribe una nota o selecciona una imagen primero.");
+            return;
+        }
+
+        if (archivoImagen) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                guardarEnLocalStorage(texto, e.target.result);
+            };
+            reader.readAsDataURL(archivoImagen);
+        } else {
+            guardarEnLocalStorage(texto, null);
+        }
+    }
+
+    function guardarEnLocalStorage(texto, imagenBase64) {
+        const nuevasNotas = JSON.parse(localStorage.getItem("notas_katherine")) || [];
+        
+        const nuevaNota = {
+            id: Date.now(),
+            texto: texto,
+            imagen: imagenBase64
+        };
+
+        nuevasNotas.unshift(nuevaNota); // Agrega al inicio para ver lo último primero
+
+        try {
+            localStorage.setItem("notas_katherine", JSON.stringify(nuevasNotas));
+            // Limpiar campos
+            document.getElementById("textoNota").value = "";
+            document.getElementById("imagenNota").value = "";
+            document.getElementById("nombreArchivo").textContent = "";
+            
+            ordenarYMostrarNotas();
+        } catch (error) {
+            alert("La imagen es demasiado pesada para guardarla localmente. Intenta con una imagen de menor tamaño o captura de pantalla.");
+        }
+    }
+
+    function ordenarYMostrarNotas() {
+        const contenedor = document.getElementById("contenedorNotas");
+        contenedor.innerHTML = "";
+        const notas = JSON.parse(localStorage.getItem("notas_katherine")) || [];
+
+        if (notas.length === 0) {
+            contenedor.innerHTML = `<p style="text-align: center; color: rgba(255,255,255,0.4); font-style: italic; font-size:0.9rem;">No hay notas añadidas todavía...</p>`;
+            return;
+        }
+
+        notas.forEach(nota => {
+            const tarjeta = document.createElement("div");
+            tarjeta.className = "tarjeta-nota";
+            
+            let htmlContenido = `<button class="btn-eliminar" onclick="eliminarNota(${nota.id})">✕</button>`;
+            if (nota.texto) {
+                htmlContenido += `<p>${nota.texto}</p>`;
+            }
+            if (nota.imagen) {
+                htmlContenido += `<img src="${nota.imagen}" alt="Imagen de recuerdo">`;
+            }
+
+            tarjeta.innerHTML = htmlContenido;
+            contenedor.appendChild(tarjeta);
+        });
+    }
+
+    function eliminarNota(id) {
+        let notas = JSON.parse(localStorage.getItem("notas_katherine")) || [];
+        notas = notas.filter(nota => nota.id !== id);
+        localStorage.setItem("notas_katherine", JSON.stringify(notas));
+        ordenarYMostrarNotas();
+    }
+</script>
 
 </body>
 </html>
