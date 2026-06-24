@@ -12,7 +12,6 @@
             padding: 0;
             font-family: 'Montserrat', sans-serif;
             color: #ffffff;
-            /* Fondo del espacio con galaxia roja y estrellas */
             background: radial-gradient(circle at center, rgba(150, 10, 30, 0.4) 0%, rgba(20, 0, 5, 0.9) 70%), 
                         url('galaxia.jpg') no-repeat center center fixed;
             background-size: cover;
@@ -23,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* Efecto de estrellas extras flotando de fondo */
         body::before {
             content: "";
             position: fixed;
@@ -111,7 +109,6 @@
             padding-top: 20px;
         }
 
-        /* Corazones decorativos flotantes simulados */
         .decoracion-corazon {
             text-align: center;
             font-size: 2rem;
@@ -120,7 +117,6 @@
             margin: 15px 0;
         }
         
-        /* NUEVA SECCIÓN PARA EL QR / GALAXIA */
         .qr-seccion {
             display: flex;
             flex-direction: column;
@@ -141,12 +137,9 @@
         .qr-contenedor {
             padding: 5px;
             display: inline-block;
-            max-width: 450px; /* Alínea el tamaño máximo con tus otras fotos */
+            max-width: 450px;
         }
 
-        /* =======================================================
-           NUEVO APARTADO: BLOQUE DE NOTAS Y RECUERDOS FUTUROS 
-           ======================================================= */
         .seccion-notas {
             margin-top: 40px;
             padding-top: 30px;
@@ -199,7 +192,6 @@
             gap: 10px;
         }
 
-        /* Estilo personalizado para el input de tipo archivo */
         .input-archivo-label {
             background: rgba(255, 255, 255, 0.1);
             padding: 8px 15px;
@@ -238,7 +230,6 @@
             opacity: 0.9;
         }
 
-        /* Contenedor de las notas guardadas */
         .contenedor-notas-guardadas {
             display: flex;
             flex-direction: column;
@@ -269,8 +260,8 @@
 
         .tarjeta-nota img {
             width: 100%;
-            max-height: 300px;
-            object-fit: cover;
+            max-height: 400px;
+            object-fit: contain;
             border-radius: 8px;
             margin-top: 5px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -312,7 +303,7 @@
         
         HASTA HACE POCO QUE DESCUBRI QUE NO TE GUSTABA COMO A MI ME GUSTABAS TU. TAL VES PIENSES QUE ME PUSE ASI POR ALGO INSIGNIFICANTE PERO TU COMO ESTARIAS SI NO LE ATRAES A TU CHICO....       
         
-        DEJE DE ESCRIBIRTE, PERO CLARO QUE QUERIA HACERLO. HASTA QUE TE ESCRIBI PERO SOLO RESPONDIAS COSAS COMO AA, A, OK, Y COSAS ASI, PERO BU Bueno LUEGO...       
+        DEJE DE ESCRIBIRTE, PERO CLARO QUE QUERIA HACERLO. HASTA QUE TE ESCRIBI PERO SOLO RESPONDIAS COSAS COMO AA, A, OK, Y COSAS ASI, PERO BUENO LUEGO...       
 
         Te escriibi varias veces y al parecer ya no tienes intención de hablarme, no voy a decir que me equivoque o me arrepiento de lo que te dije por qué la verdad no, no me arrepiento pero también sé que te extraño, quiero verte y sentirte a mi lado pero sabiendo que tú también lo quieres y lo sientes m...... 
         
@@ -322,7 +313,7 @@
         Tal vez lo nuestro solo fue un amor de verano. Algo q talvez para algunos no signifique nada pero yo si te tendré presente siempre, fuiste con la primera que hice varias cosas locas y no te quiero olvidar.
         QUE TAL SI NOS HACEMOS AMIGOS,TALVEZ SI FUNCIONAMOS ASI .
 
-        EN FIN .TE PUEDO AYUDAR A  q encuentres al chico que te gusta, al chico con músculos "al Leonardo DiCaprio" de tus sueños, 🫂✨
+       EN FIN .TE PUEDO AYUDAR A  q encuentres al chico que te gusta, al chico con músculos "al Leonardo DiCaprio" de tus sueños, 🫂✨
     </div>
 
     <div class="decoracion-corazon">💖</div>
@@ -358,12 +349,11 @@
                     <input type="file" id="imagenNota" accept="image/*">
                 </label>
                 <span id="nombreArchivo" style="font-size: 0.8rem; color: #aaa;"></span>
-                <button class="btn-guardar" onclick="agregarNota()">Publicar</button>
+                <button class="btn-guardar" id="btnPublicar">Publicar</button>
             </div>
         </div>
 
-        <div id="contenedorNotas" class="contenedor-notas-guardadas">
-            </div>
+        <div id="contenedorNotas" class="contenedor-notas-guardadas"></div>
     </div>
 
     <div class="posdata">
@@ -371,75 +361,118 @@
     </div>
 </div>
 
-<script>
-    // Cargar notas guardadas en localStorage al abrir la página
-    document.addEventListener("DOMContentLoaded", ordenarYMostrarNotas);
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Mostrar el nombre del archivo seleccionado
-    document.getElementById('imagenNota').addEventListener('change', function(e) {
+    // Credenciales gratis para Firestore
+    const firebaseConfig = {
+        apiKey: "AIzaSyASFLTN_fNILQC0EgeRUPJwgIuNBfMHyps",
+        authDomain: "para-katherine.firebaseapp.com",
+        projectId: "para-katherine",
+        storageBucket: "para-katherine.appspot.com",
+        messagingSenderId: "92532697639",
+        appId: "1:92532697639:web:738e03393c69f9d97f7c82"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const btnPublicar = document.getElementById("btnPublicar");
+    const inputImagen = document.getElementById("imagenNota");
+    const nombreArchivo = document.getElementById("nombreArchivo");
+
+    inputImagen.addEventListener('change', function(e) {
         const nombre = e.target.files[0] ? e.target.files[0].name : '';
-        document.getElementById('nombreArchivo').textContent = nombre ? `📷 ${nombre}` : '';
+        nombreArchivo.textContent = nombre ? `📷 ${nombre}` : '';
     });
+
+    btnPublicar.addEventListener("click", agregarNota);
 
     function agregarNota() {
         const texto = document.getElementById("textoNota").value.trim();
-        const archivoImagen = document.getElementById("imagenNota").files[0];
+        const archivoImagen = inputImagen.files[0];
 
         if (!texto && !archivoImagen) {
             alert("Por favor, escribe una nota o selecciona una imagen primero.");
             return;
         }
 
+        btnPublicar.disabled = true;
+        btnPublicar.textContent = "Subiendo...";
+
+        // Si hay una foto, la procesamos y comprimimos convirtiéndola a Base64 string
         if (archivoImagen) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                guardarEnLocalStorage(texto, e.target.result);
+            reader.onload = async function(e) {
+                const img = new Image();
+                img.onload = async function() {
+                    // Redimensionar un poco la imagen para que no pese demasiado en la BD
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 600;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convertir a JPEG comprimido
+                    const base64Comprimido = canvas.toDataURL('image/jpeg', 0.6);
+                    await subirDatos(texto, base64Comprimido);
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(archivoImagen);
         } else {
-            guardarEnLocalStorage(texto, null);
+            subirDatos(texto, null);
         }
     }
 
-    function guardarEnLocalStorage(texto, imagenBase64) {
-        const nuevasNotas = JSON.parse(localStorage.getItem("notas_katherine")) || [];
-        
-        const nuevaNota = {
-            id: Date.now(),
-            texto: texto,
-            imagen: imagenBase64
-        };
-
-        nuevasNotas.unshift(nuevaNota); // Agrega al inicio para ver lo último primero
-
+    async function subirDatos(texto, imagenBase64) {
         try {
-            localStorage.setItem("notas_katherine", JSON.stringify(nuevasNotas));
-            // Limpiar campos
+            await addDoc(collection(db, "notas"), {
+                texto: texto,
+                imagen: imagenBase64,
+                fecha: Date.now()
+            });
+
             document.getElementById("textoNota").value = "";
-            document.getElementById("imagenNota").value = "";
-            document.getElementById("nombreArchivo").textContent = "";
-            
-            ordenarYMostrarNotas();
+            inputImagen.value = "";
+            nombreArchivo.textContent = "";
         } catch (error) {
-            alert("La imagen es demasiado pesada para guardarla localmente. Intenta con una imagen de menor tamaño o captura de pantalla.");
+            console.error("Error:", error);
+            alert("Error al subir el mensaje. Verifica que las reglas de Firestore estén en modo prueba.");
+        } finally {
+            btnPublicar.disabled = false;
+            btnPublicar.textContent = "Publicar";
         }
     }
 
-    function ordenarYMostrarNotas() {
+    // CARGA E SINCRO EN TIEMPO REAL
+    const q = query(collection(db, "notas"), orderBy("fecha", "desc"));
+    onSnapshot(q, (snapshot) => {
         const contenedor = document.getElementById("contenedorNotas");
         contenedor.innerHTML = "";
-        const notas = JSON.parse(localStorage.getItem("notas_katherine")) || [];
 
-        if (notas.length === 0) {
+        if (snapshot.empty) {
             contenedor.innerHTML = `<p style="text-align: center; color: rgba(255,255,255,0.4); font-style: italic; font-size:0.9rem;">No hay notas añadidas todavía...</p>`;
             return;
         }
 
-        notas.forEach(nota => {
+        snapshot.forEach((docSnap) => {
+            const nota = docSnap.data();
+            const idNota = docSnap.id;
+
             const tarjeta = document.createElement("div");
             tarjeta.className = "tarjeta-nota";
-            
-            let htmlContenido = `<button class="btn-eliminar" onclick="eliminarNota(${nota.id})">✕</button>`;
+
+            let htmlContenido = `<button class="btn-eliminar" data-id="${idNota}">✕</button>`;
             if (nota.texto) {
                 htmlContenido += `<p>${nota.texto}</p>`;
             }
@@ -450,13 +483,22 @@
             tarjeta.innerHTML = htmlContenido;
             contenedor.appendChild(tarjeta);
         });
-    }
 
-    function eliminarNota(id) {
-        let notas = JSON.parse(localStorage.getItem("notas_katherine")) || [];
-        notas = notas.filter(nota => nota.id !== id);
-        localStorage.setItem("notas_katherine", JSON.stringify(notas));
-        ordenarYMostrarNotas();
+        document.querySelectorAll(".btn-eliminar").forEach(boton => {
+            boton.addEventListener("click", function() {
+                const id = this.getAttribute("data-id");
+                eliminarNota(id);
+            });
+        });
+    });
+
+    async function eliminarNota(id) {
+        if (!confirm("¿Seguro que quieres borrar esta nota?")) return;
+        try {
+            await deleteDoc(doc(db, "notas", id));
+        } catch (error) {
+            alert("No se pudo eliminar.");
+        }
     }
 </script>
 
